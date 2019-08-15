@@ -45,13 +45,13 @@ public class AppointmentService {
 	 * @return The number of actually created appointments.
 	 */
 	public ServiceResponse createRandomAppointments(int quantity, LocalDate endDate) {
-		List<Appointment> apps = RandomHelper.getRandomAppointments(quantity, endDate);
+		List<Appointment> appointments = RandomHelper.getRandomAppointments(quantity, endDate);
 
 		try {
-			for (Appointment app : apps) {
+			for (Appointment app : appointments) {
 				storage.createAppointment(app);
 			}
-			return createOkResponse(apps.size());
+			return createOkResponse(appointments.size());
 		} catch (Exception e) {
 			return createFatalResponse();
 		}

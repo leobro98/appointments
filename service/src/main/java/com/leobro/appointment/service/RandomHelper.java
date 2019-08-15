@@ -19,66 +19,73 @@ class RandomHelper {
 	private static final Random random = new Random();
 
 	static List<Appointment> getRandomAppointments(int quantity, LocalDate endDate) {
-		int roundDays = (int) ChronoUnit.DAYS.between(LocalDate.now(), endDate);
-		List<LocalDateTime> slots = new ArrayList<>();
+		List<LocalDateTime> slots = createAppointmentSlotsForToday();
+		slots.addAll(createAppointmentSlotsForNextFullDays(endDate));
 
-		int nextHour = LocalDateTime.now().plusHours(1).getHour();
+		List<Integer> slotIndices = getRandomIntegers(quantity, slots.size() - 1);
+
+		return generateAppointments(slots, slotIndices);
+	}
+
+	private static List<LocalDateTime> createAppointmentSlotsForToday() {
+		List<LocalDateTime> slots = new ArrayList<>();
+		LocalDateTime now = LocalDateTime.now();
+
+		int nextHour = now.plusHours(1).getHour();
 		int startHour = START_WORK_HOUR;
 		if (nextHour > START_WORK_HOUR) {
 			startHour = nextHour;
 		}
 
 		if (nextHour < END_WORK_HOUR) {
-			for (int workHour = startHour; workHour < END_WORK_HOUR; workHour++) {
-				slots.add(LocalDateTime.now().withHour(workHour).truncatedTo(ChronoUnit.HOURS));
+			for (int hour = startHour; hour < END_WORK_HOUR; hour++) {
+				slots.add(now.withHour(hour).truncatedTo(ChronoUnit.HOURS));
 			}
 		}
+		return slots;
+	}
 
-		LocalDateTime workDay = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
-		for (int day = 1; day <= roundDays; day++) {
-			workDay = workDay.plusDays(1);
+	private static List<LocalDateTime> createAppointmentSlotsForNextFullDays(LocalDate endDate) {
+		List<LocalDateTime> slots = new ArrayList<>();
+		int fullDayCount = (int) ChronoUnit.DAYS.between(LocalDate.now(), endDate);
+		LocalDateTime day = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
 
-			for (int workHour = START_WORK_HOUR; workHour < END_WORK_HOUR; workHour++) {
-				slots.add(workDay.withHour(workHour));
+		for (int dayIndex = 1; dayIndex <= fullDayCount; dayIndex++) {
+			day = day.plusDays(1);
+
+			for (int hour = START_WORK_HOUR; hour < END_WORK_HOUR; hour++) {
+				slots.add(day.withHour(hour));
 			}
 		}
+		return slots;
+	}
 
-		List<Integer> slotIndices = getRandomIntegersInRange(quantity, slots.size() - 1);
-
-		List<Appointment> apps = generateAppointments(slots, slotIndices);
-		return apps;
+	private static List<Integer> getRandomIntegers(long count, int max) {
+		return random.ints(count, 0, max + 1)
+				.sorted()
+				.distinct()
+				.boxed().collect(Collectors.toList());
 	}
 
 	private static List<Appointment> generateAppointments(List<LocalDateTime> slots, List<Integer> slotIndices) {
 		List<Appointment> apps = new ArrayList<>();
-		int firstIndex = 0;
-		int lastIndex = 0;
 
 		for (int slotIndex : slotIndices) {
 			Appointment app = new Appointment();
 
-			app.setClientName(FIRST_NAMES[firstIndex++] + " " + LAST_NAMES[lastIndex++]);
+			app.setClientName(getRandomName());
 			app.setTime(slots.get(slotIndex));
 			app.setPrice(getOneRandomIntegerInRange(1, 20) * 10);
 			app.setStatus(Appointment.AppStatus.PASS);
-
-			if (firstIndex == 4) {
-				firstIndex = 0;
-			}
-			if (lastIndex == 6) {
-				lastIndex = 0;
-			}
 
 			apps.add(app);
 		}
 		return apps;
 	}
 
-	private static List<Integer> getRandomIntegersInRange(long count, int max) {
-		return random.ints(count, 0, max + 1)
-				.sorted()
-				.distinct()
-				.boxed().collect(Collectors.toList());
+	private static String getRandomName() {
+		return FIRST_NAMES[getOneRandomIntegerInRange(0, 3)] + " "
+				+ LAST_NAMES[getOneRandomIntegerInRange(0, 5)];
 	}
 
 	private static int getOneRandomIntegerInRange(int min, int max) {
