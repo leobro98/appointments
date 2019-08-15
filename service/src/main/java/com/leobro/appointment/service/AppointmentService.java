@@ -3,9 +3,11 @@ package com.leobro.appointment.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import static com.leobro.appointment.service.ResponseFactory.*;
+import static com.leobro.appointment.service.ResponseFactory.createFatalResponse;
+import static com.leobro.appointment.service.ResponseFactory.createOkResponse;
 
 /**
  * Holds the business logic of the application. Serves requests from the REST controller.
@@ -35,7 +37,24 @@ public class AppointmentService {
 		}
 	}
 
-	public ServiceResponse createRandomAppointments(String quantity, String endDate) {
-		return null;
+	/**
+	 * Randomly creates given number of test appointments from current moment to the end of the given date.
+	 *
+	 * @param quantity the number of appointments to create,
+	 * @param endDate  the last date for the appointments.
+	 * @return The number of actually created appointments.
+	 */
+	public ServiceResponse createRandomAppointments(int quantity, LocalDate endDate) {
+		List<Appointment> apps = RandomHelper.getRandomAppointments(quantity, endDate);
+
+		try {
+			for (Appointment app : apps) {
+				storage.createAppointment(app);
+			}
+			return createOkResponse(apps.size());
+		} catch (Exception e) {
+			return createFatalResponse();
+		}
 	}
+
 }

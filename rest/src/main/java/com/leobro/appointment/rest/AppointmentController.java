@@ -3,10 +3,16 @@ package com.leobro.appointment.rest;
 import com.leobro.appointment.service.Appointment;
 import com.leobro.appointment.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import java.time.LocalDate;
 
 /**
  * Controller of the REST Web service. This is the first class hit by the client's request.
@@ -14,6 +20,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(path = "/")
+@Validated
 public class AppointmentController {
 
 	private final AppointmentService service;
@@ -44,8 +51,9 @@ public class AppointmentController {
 	 * @return The number of actually created appointments.
 	 */
 	@PostMapping("schedule")
-	public ResponseEntity<?> createRandomAppointments(@RequestParam("quantity") String quantity,
-													  @RequestParam("enddate") String endDate) {
+	public ResponseEntity<?> createRandomAppointments(@RequestParam("quantity") @Min(1) @Max(80) int quantity,
+													  @RequestParam("enddate") @Future
+													  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 		return ResponseFactory.createResponse(
 				service.createRandomAppointments(quantity, endDate));
 	}
