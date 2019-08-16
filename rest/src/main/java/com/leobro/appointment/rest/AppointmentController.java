@@ -9,9 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.time.LocalDate;
 
 /**
@@ -51,8 +48,8 @@ public class AppointmentController {
 	 * @return The number of actually created appointments.
 	 */
 	@PostMapping("schedule")
-	public ResponseEntity<?> createRandomAppointments(@RequestParam("quantity") @Min(1) @Max(80) int quantity,
-													  @RequestParam("enddate") @Future
+	public ResponseEntity<?> createRandomAppointments(@RequestParam("quantity") int quantity,
+													  @RequestParam("enddate")
 													  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 		return ResponseFactory.createResponse(
 				service.createRandomAppointments(quantity, endDate));
@@ -65,8 +62,9 @@ public class AppointmentController {
 	 * @return The appointment with the requested ID.
 	 */
 	@GetMapping("appointments/{id}")
-	public ResponseEntity<?> getAppointment(@PathVariable("id") String id) {
-		return ResponseEntity.ok().build();
+	public ResponseEntity<?> getAppointment(@PathVariable("id") long id) {
+		return ResponseFactory.createResponse(
+				service.getAppointment(id));
 	}
 
 	/**
@@ -91,7 +89,7 @@ public class AppointmentController {
 	 * @return An empty body.
 	 */
 	@PutMapping("appointments/{id}")
-	public ResponseEntity<?> updateAppointmentStatus(@PathVariable("id") String id,
+	public ResponseEntity<?> updateAppointmentStatus(@PathVariable("id") long id,
 													 @RequestBody String status) {
 		return ResponseEntity.ok().build();
 	}
@@ -103,7 +101,7 @@ public class AppointmentController {
 	 * @return The deleted appointment.
 	 */
 	@DeleteMapping("appointments/{id}")
-	public ResponseEntity<?> deleteAppointment(@PathVariable("id") String id) {
+	public ResponseEntity<?> deleteAppointment(@PathVariable("id") long id) {
 		return ResponseEntity.ok().build();
 	}
 }

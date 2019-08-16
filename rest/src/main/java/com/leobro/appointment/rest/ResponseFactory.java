@@ -17,22 +17,31 @@ class ResponseFactory {
 	 * response's payload.
 	 */
 	static ResponseEntity<?> createResponse(ServiceResponse serviceResponse) {
+		Object payload = serviceResponse.getPayload();
+
 		if (isOk(serviceResponse)) {
 			return ResponseEntity.ok()
-					.body(serviceResponse.getPayload());
-		} else if (isError(serviceResponse)) {
+					.body(payload);
+		} else if (isValidationError(serviceResponse)) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(serviceResponse.getPayload());
+					.body(payload);
+		} else if (isNotFoundError(serviceResponse)) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(payload);
 		}
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body(serviceResponse.getPayload());
+				.body(payload);
 	}
 
 	private static boolean isOk(ServiceResponse serviceResponse) {
 		return serviceResponse.getResult() == ServiceResponse.ResultType.OK;
 	}
 
-	private static boolean isError(ServiceResponse serviceResponse) {
+	private static boolean isValidationError(ServiceResponse serviceResponse) {
 		return serviceResponse.getResult() == ServiceResponse.ResultType.ERROR;
+	}
+
+	private static boolean isNotFoundError(ServiceResponse serviceResponse) {
+		return serviceResponse.getResult() == ServiceResponse.ResultType.NOT_FOUND;
 	}
 }

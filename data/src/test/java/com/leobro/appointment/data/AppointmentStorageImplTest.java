@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -14,7 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 public class AppointmentStorageImplTest {
 
-	private static final long NEW_ID = 123L;
+	private static final long ID = 123L;
 	private static final String CLIENT_NAME = "Test Client";
 	private static final int YEAR = 2019;
 	private static final int DAY = 20;
@@ -26,15 +27,15 @@ public class AppointmentStorageImplTest {
 
 	private AppointmentRepository repository;
 	private AppointmentStorageImpl storage;
+	private Appointment appointment;
+	private AppointmentEntity entity;
 
 	@Before
 	public void setUp() {
 		repository = Mockito.mock(AppointmentRepository.class);
-		AppointmentEntity entity = new AppointmentEntity();
-		entity.setId(NEW_ID);
-		Mockito.when(repository.save(any(AppointmentEntity.class))).thenReturn(entity);
-
 		storage = new AppointmentStorageImpl(repository);
+		appointment = createAppointment();
+		entity = createAppointmentEntity();
 	}
 
 	private static Appointment createAppointment() {
@@ -61,12 +62,25 @@ public class AppointmentStorageImplTest {
 
 	@Test
 	public void when_createAppointment_then_callsRepositorySave() {
-		Appointment appointment = createAppointment();
-		AppointmentEntity entity = createAppointmentEntity();
+		AppointmentEntity entityWithId = new AppointmentEntity();
+		entityWithId.setId(ID);
+		Mockito.when(repository.save(any(AppointmentEntity.class))).thenReturn(entityWithId);
 
 		long id = storage.createAppointment(appointment);
 
 		Mockito.verify(repository).save(entity);
-		assertThat(id, is(NEW_ID));
+		assertThat(id, is(ID));
+	}
+
+	@Test
+	public void when_getAppointment_then_callsRepositoryFindById() {
+		appointment.setId(ID);
+		entity.setId(ID);
+		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(entity));
+
+		Appointment app = storage.getAppointment(ID);
+
+		Mockito.verify(repository).findById(ID);
+		assertThat(app, is(appointment));
 	}
 }

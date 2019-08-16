@@ -4,8 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class AppointmentServiceTest {
 
@@ -17,13 +21,17 @@ public class AppointmentServiceTest {
 	private static final LocalDateTime DATE_TIME = LocalDateTime.of(YEAR, Month.AUGUST, DAY, HOUR, MINUTE);
 	private static final int PRICE = 30;
 	private static final Appointment.AppStatus APP_STATUS = Appointment.AppStatus.PASS;
+	private static final long CREATED_ID = 1L;
 
 	private AppointmentService service;
 	private AppointmentStorage storage;
+	private Appointment appointment;
 
 	@Before
 	public void setUp() {
+		appointment = createAppointment();
 		storage = Mockito.mock(AppointmentStorage.class);
+
 		service = new AppointmentService(storage);
 	}
 
@@ -40,8 +48,31 @@ public class AppointmentServiceTest {
 
 	@Test
 	public void when_createAppointment_then_callsStorageCreateAppointment() {
-		Appointment appointment = createAppointment();
-		service.createAppointment(appointment);
+		Mockito.when(storage.createAppointment(Mockito.any(Appointment.class))).thenReturn(CREATED_ID);
+
+		ServiceResponse response = service.createAppointment(appointment);
+
 		Mockito.verify(storage).createAppointment(appointment);
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.OK));
+		assertThat(response.getPayload(), is(CREATED_ID));
+	}
+
+	@Test
+	public void when_createRandomAppointments_then_callsStorageCreateAppointment() {
+		ServiceResponse response = service.createRandomAppointments(5, LocalDate.now().plusDays(1));
+
+		Mockito.verify(storage, Mockito.atLeastOnce()).createAppointment(Mockito.any(Appointment.class));
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.OK));
+	}
+
+	@Test
+	public void when_getAppointment_then_callsStorageGetAppointment() {
+		Mockito.when(storage.getAppointment(Mockito.anyLong())).thenReturn(appointment);
+
+		ServiceResponse response = service.getAppointment(1);
+
+		Mockito.verify(storage).getAppointment(Mockito.anyLong());
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.OK));
+		assertThat(response.getPayload(), is(appointment));
 	}
 }

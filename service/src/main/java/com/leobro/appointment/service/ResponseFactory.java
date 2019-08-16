@@ -7,7 +7,8 @@ import java.util.List;
  */
 class ResponseFactory {
 
-	static final String MESSAGE_ERROR = "Service error";
+	private static final String MESSAGE_SERVER_ERROR = "Unexpected server error";
+	private static final String MESSAGE_NOT_FOUND = "The appointment is not found";
 
 	/**
 	 * Creates the response of successful processing.
@@ -30,11 +31,20 @@ class ResponseFactory {
 	}
 
 	/**
+	 * Creates the response, when no appointment can be found in the data storage by the given ID.
+	 *
+	 * @return The service response with the error message.
+	 */
+	static ServiceResponse createNotFoundResponse() {
+		return new ServiceResponse(ServiceResponse.ResultType.NOT_FOUND, MESSAGE_NOT_FOUND);
+	}
+
+	/**
 	 * Creates the response about some unexpected error in the service.
 	 *
-	 * @return The service response telling about an error on the service side.
+	 * @return The service response telling about an error on the server side.
 	 */
 	static ServiceResponse createFatalResponse() {
-		return new ServiceResponse(ServiceResponse.ResultType.FATAL, MESSAGE_ERROR);
+		return new ServiceResponse(ServiceResponse.ResultType.FATAL, MESSAGE_SERVER_ERROR);
 	}
 }

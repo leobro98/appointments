@@ -12,11 +12,13 @@ public class ServiceResponse {
 	 * Shows, how successful was the processing of the request.
 	 * <p>OK - the processing was successful,
 	 * <p>ERROR - there was a validation error caused by data in the request,
+	 * <p>NOT_FOUND - the sought resource is not found,
 	 * <p>FATAL - unexpected exception occurred during the processing.
 	 */
 	public enum ResultType {
 		OK,
 		ERROR,
+		NOT_FOUND,
 		FATAL;
 	}
 

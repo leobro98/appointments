@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.leobro.appointment.service.ResponseFactory.createFatalResponse;
 import static com.leobro.appointment.service.ResponseFactory.createOkResponse;
@@ -45,6 +47,11 @@ public class AppointmentService {
 	 * @return The number of actually created appointments.
 	 */
 	public ServiceResponse createRandomAppointments(int quantity, LocalDate endDate) {
+		List<String> errors = verifyRandom(quantity, endDate);
+		if (errors.size() > 0) {
+			return ResponseFactory.createErrorResponse(errors);
+		}
+
 		List<Appointment> appointments = RandomHelper.getRandomAppointments(quantity, endDate);
 
 		try {
@@ -57,4 +64,27 @@ public class AppointmentService {
 		}
 	}
 
+	private static List<String> verifyRandom(int quantity, LocalDate endDate) {
+		ArrayList<String> errors = new ArrayList<>();
+
+		if (quantity <= 0) {
+			errors.add("Quantity must be a positive integer.");
+		}
+
+		if (endDate.isBefore(LocalDate.now())) {
+			errors.add("End date must be in future.");
+		}
+		return errors;
+	}
+
+	public ServiceResponse getAppointment(long id) {
+		try {
+			Appointment appointment = storage.getAppointment(id);
+			return createOkResponse(appointment);
+		} catch (NoSuchElementException e) {
+			return ResponseFactory.createNotFoundResponse();
+		} catch (Exception e) {
+			return createFatalResponse();
+		}
+	}
 }

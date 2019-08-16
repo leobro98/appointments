@@ -5,6 +5,9 @@ import com.leobro.appointment.service.AppointmentStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 @Repository
 public class AppointmentStorageImpl implements AppointmentStorage {
 
@@ -17,12 +20,12 @@ public class AppointmentStorageImpl implements AppointmentStorage {
 
 	@Override
 	public long createAppointment(Appointment app) {
-		AppointmentEntity entity = createAppointmentEntity(app);
+		AppointmentEntity entity = mapAppointmentEntity(app);
 		AppointmentEntity newEntity = repository.save(entity);
 		return newEntity.getId();
 	}
 
-	private static AppointmentEntity createAppointmentEntity(Appointment app) {
+	private static AppointmentEntity mapAppointmentEntity(Appointment app) {
 		AppointmentEntity entity = new AppointmentEntity();
 
 		entity.setClientName(app.getClientName());
@@ -31,5 +34,24 @@ public class AppointmentStorageImpl implements AppointmentStorage {
 		entity.setStatus(app.getStatus());
 
 		return entity;
+	}
+
+	@Override
+	public Appointment getAppointment(long id) throws NoSuchElementException {
+		Optional<AppointmentEntity> optional = repository.findById(id);
+		AppointmentEntity entity = optional.get();
+		return mapAppointment(entity);
+	}
+
+	private Appointment mapAppointment(AppointmentEntity entity) {
+		Appointment app = new Appointment();
+
+		app.setId(entity.getId());
+		app.setClientName(entity.getClientName());
+		app.setTime(entity.getTime());
+		app.setPrice(entity.getPrice());
+		app.setStatus(entity.getStatus());
+
+		return app;
 	}
 }

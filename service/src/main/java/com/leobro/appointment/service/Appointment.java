@@ -2,8 +2,7 @@ package com.leobro.appointment.service;
 
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * The appointment with a client.
@@ -83,5 +82,22 @@ public class Appointment {
 
 	public void setStatus(AppStatus status) {
 		this.status = status;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Appointment that = (Appointment) o;
+		return id == that.id &&
+				Double.compare(that.price, price) == 0 &&
+				Objects.equals(clientName, that.clientName) &&
+				Objects.equals(time, that.time) &&
+				status == that.status;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, clientName, time, price, status);
 	}
 }
