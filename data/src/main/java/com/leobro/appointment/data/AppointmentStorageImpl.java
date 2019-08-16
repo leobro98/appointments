@@ -5,8 +5,11 @@ import com.leobro.appointment.service.AppointmentStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class AppointmentStorageImpl implements AppointmentStorage {
@@ -53,5 +56,13 @@ public class AppointmentStorageImpl implements AppointmentStorage {
 		app.setStatus(entity.getStatus());
 
 		return app;
+	}
+
+	@Override
+	public List<Appointment> getAllAppointments(LocalDate startDate, LocalDate endDate) {
+		List<AppointmentEntity> entities = repository.findByTimeBetween(startDate, endDate);
+		return entities.stream()
+				.map(this::mapAppointment)
+				.collect(Collectors.toList());
 	}
 }

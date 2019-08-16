@@ -7,6 +7,8 @@ import org.mockito.Mockito;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -74,5 +76,18 @@ public class AppointmentServiceTest {
 		Mockito.verify(storage).getAppointment(Mockito.anyLong());
 		assertThat(response.getResult(), is(ServiceResponse.ResultType.OK));
 		assertThat(response.getPayload(), is(appointment));
+	}
+
+	@Test
+	public void when_getAllAppointments_then_callsStorageGetAllAppointments() {
+		List<Appointment> appointments = new ArrayList<>();
+		Mockito.when(storage.getAllAppointments(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class)))
+				.thenReturn(appointments);
+
+		LocalDate startDate = LocalDate.of(YEAR, Month.AUGUST, 20);
+		LocalDate endDate = LocalDate.of(YEAR, Month.AUGUST, 21);
+		ServiceResponse response = service.getAllAppointments(startDate, endDate);
+
+		Mockito.verify(storage).getAllAppointments(startDate, endDate);
 	}
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -17,6 +18,10 @@ import static com.leobro.appointment.service.ResponseFactory.createOkResponse;
 @Service
 public class AppointmentService {
 
+	private static final String QUANTITY_ERROR = "Quantity must be a positive integer.";
+	private static final String END_DATE_ERROR = "End date must be in future.";
+	private static final String DATES_ERROR = "Start date must be before the end date";
+
 	private AppointmentStorage storage;
 
 	@Autowired
@@ -28,7 +33,7 @@ public class AppointmentService {
 	 * Creates a new appointment in the data storage according to the passed object.
 	 *
 	 * @param appointment the {@link Appointment} object containing data to be persisted.
-	 * @return ID of the appointment created in the data storage.
+	 * @return The response with the ID of the appointment created in the data storage.
 	 */
 	public ServiceResponse createAppointment(Appointment appointment) {
 		try {
@@ -44,7 +49,7 @@ public class AppointmentService {
 	 *
 	 * @param quantity the number of appointments to create,
 	 * @param endDate  the last date for the appointments.
-	 * @return The number of actually created appointments.
+	 * @return The response with the number of actually created appointments.
 	 */
 	public ServiceResponse createRandomAppointments(int quantity, LocalDate endDate) {
 		List<String> errors = verifyRandom(quantity, endDate);
@@ -68,15 +73,21 @@ public class AppointmentService {
 		ArrayList<String> errors = new ArrayList<>();
 
 		if (quantity <= 0) {
-			errors.add("Quantity must be a positive integer.");
+			errors.add(QUANTITY_ERROR);
 		}
 
 		if (endDate.isBefore(LocalDate.now())) {
-			errors.add("End date must be in future.");
+			errors.add(END_DATE_ERROR);
 		}
 		return errors;
 	}
 
+	/**
+	 * Retrieves the appointment with the passed ID from the data storage.
+	 *
+	 * @param id ID of the appointment.
+	 * @return The response with the appointment in its payload.
+	 */
 	public ServiceResponse getAppointment(long id) {
 		try {
 			Appointment appointment = storage.getAppointment(id);
@@ -86,5 +97,36 @@ public class AppointmentService {
 		} catch (Exception e) {
 			return createFatalResponse();
 		}
+	}
+
+	/**
+	 * Retrieves all appointments that are scheduled between the passed date range sorted by their price.
+	 *
+	 * @param startDate The start date of the date interval.
+	 * @param endDate   The end date of the date interval.
+	 * @return The response with all appointments within the date interval sorted by the price.
+	 */
+	public ServiceResponse getAllAppointments(LocalDate startDate, LocalDate endDate) {
+		List<String> errors = verifyDates(startDate, endDate);
+		if (errors.size() > 0) {
+			return ResponseFactory.createErrorResponse(errors);
+		}
+
+		try {
+			List<Appointment> appointments = storage.getAllAppointments(startDate, endDate);
+			appointments.sort(Comparator.comparing(Appointment::getPrice));
+			return createOkResponse(appointments);
+		} catch (Exception e) {
+			return createFatalResponse();
+		}
+	}
+
+	private static List<String> verifyDates(LocalDate startDate, LocalDate endDate) {
+		ArrayList<String> errors = new ArrayList<>();
+
+		if (startDate.isAfter(endDate)) {
+			errors.add(DATES_ERROR);
+		}
+		return errors;
 	}
 }

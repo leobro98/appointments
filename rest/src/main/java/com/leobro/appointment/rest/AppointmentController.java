@@ -76,9 +76,12 @@ public class AppointmentController {
 	 * @return All appointments within the date interval sorted by the price.
 	 */
 	@GetMapping("appointments")
-	public ResponseEntity<?> getAllAppointments(@RequestParam("startdate") String startDate,
-												@RequestParam("enddate") String endDate) {
-		return ResponseEntity.ok().build();
+	public ResponseEntity<?> getAllAppointments(@RequestParam("startdate")
+												@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+												@RequestParam("enddate")
+												@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+		return ResponseFactory.createResponse(
+				service.getAllAppointments(startDate, endDate));
 	}
 
 	/**
