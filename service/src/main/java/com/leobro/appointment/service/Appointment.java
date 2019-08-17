@@ -28,7 +28,7 @@ public class Appointment {
 	private static final String PRICE_INVALID_ERROR = "Price must be positive, the maximal value is 99 999";
 	private static final String STATUS_MISSING_ERROR = "Status is mandatory";
 
-	private long id;
+	private Long id;
 
 	@NotBlank(message = NAME_MISSING_ERROR)
 	private String clientName;
@@ -44,11 +44,11 @@ public class Appointment {
 	@NotNull(message = STATUS_MISSING_ERROR)
 	private AppStatus status;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

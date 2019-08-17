@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -24,6 +25,7 @@ public class AppointmentServiceTest {
 	private static final int PRICE = 30;
 	private static final Appointment.AppStatus APP_STATUS = Appointment.AppStatus.PASS;
 	private static final long CREATED_ID = 1L;
+	private static final int ID = 1;
 
 	private AppointmentService service;
 	private AppointmentStorage storage;
@@ -60,6 +62,15 @@ public class AppointmentServiceTest {
 	}
 
 	@Test
+	public void when_createAppointmentAndException_then_resultIsFatalError() {
+		Mockito.when(storage.createAppointment(Mockito.any(Appointment.class))).thenThrow(RuntimeException.class);
+
+		ServiceResponse response = service.createAppointment(appointment);
+
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.FATAL));
+	}
+
+	@Test
 	public void when_createRandomAppointments_then_callsStorageCreateAppointment() {
 		ServiceResponse response = service.createRandomAppointments(5, LocalDate.now().plusDays(1));
 
@@ -68,10 +79,34 @@ public class AppointmentServiceTest {
 	}
 
 	@Test
+	public void when_createRandomAppointmentsAndQuantityZero_then_doesntCallStorageCreateAppointment() {
+		ServiceResponse response = service.createRandomAppointments(0, LocalDate.now().plusDays(1));
+
+		Mockito.verify(storage, Mockito.never()).createAppointment(Mockito.any(Appointment.class));
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.ERROR));
+	}
+
+	@Test
+	public void when_createRandomAppointmentsAndQuantityNegative_then_doesntCallStorageCreateAppointment() {
+		ServiceResponse response = service.createRandomAppointments(-5, LocalDate.now().plusDays(1));
+
+		Mockito.verify(storage, Mockito.never()).createAppointment(Mockito.any(Appointment.class));
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.ERROR));
+	}
+
+	@Test
+	public void when_createRandomAppointmentsAndDateInPast_then_doesntCallStorageCreateAppointment() {
+		ServiceResponse response = service.createRandomAppointments(5, LocalDate.now().minusDays(1));
+
+		Mockito.verify(storage, Mockito.never()).createAppointment(Mockito.any(Appointment.class));
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.ERROR));
+	}
+
+	@Test
 	public void when_getAppointment_then_callsStorageGetAppointment() {
 		Mockito.when(storage.getAppointment(Mockito.anyLong())).thenReturn(appointment);
 
-		ServiceResponse response = service.getAppointment(1);
+		ServiceResponse response = service.getAppointment(ID);
 
 		Mockito.verify(storage).getAppointment(Mockito.anyLong());
 		assertThat(response.getResult(), is(ServiceResponse.ResultType.OK));
@@ -79,15 +114,38 @@ public class AppointmentServiceTest {
 	}
 
 	@Test
+	public void when_getAppointmentAndNotFound_then_resultIsNotFound() {
+		Mockito.when(storage.getAppointment(Mockito.anyLong())).thenThrow(NoSuchElementException.class);
+
+		ServiceResponse response = service.getAppointment(ID);
+
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.NOT_FOUND));
+	}
+
+	@Test
 	public void when_getAllAppointments_then_callsStorageGetAllAppointments() {
 		List<Appointment> appointments = new ArrayList<>();
+		appointments.add(appointment);
 		Mockito.when(storage.getAllAppointments(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class)))
 				.thenReturn(appointments);
-
 		LocalDate startDate = LocalDate.of(YEAR, Month.AUGUST, 20);
 		LocalDate endDate = LocalDate.of(YEAR, Month.AUGUST, 21);
+
 		ServiceResponse response = service.getAllAppointments(startDate, endDate);
 
 		Mockito.verify(storage).getAllAppointments(startDate, endDate);
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.OK));
+		assertThat(((List<Appointment>) response.getPayload()).get(0), is(appointment));
+	}
+
+	@Test
+	public void when_getAllAppointmentsAndDatesWrong_then_doesntCallStorageGetAllAppointments() {
+		LocalDate laterDate = LocalDate.of(YEAR, Month.AUGUST, 21);
+		LocalDate earlierDate = LocalDate.of(YEAR, Month.AUGUST, 20);
+
+		ServiceResponse response = service.getAllAppointments(laterDate, earlierDate);
+
+		Mockito.verify(storage, Mockito.never()).getAllAppointments(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class));
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.ERROR));
 	}
 }

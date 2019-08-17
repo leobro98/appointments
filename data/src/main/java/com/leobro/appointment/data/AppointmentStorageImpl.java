@@ -11,6 +11,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Proxy to a concrete data storage. Contains data manipulation methods. Implements {@link AppointmentStorage} API.
+ */
 @Repository
 public class AppointmentStorageImpl implements AppointmentStorage {
 
@@ -42,6 +45,7 @@ public class AppointmentStorageImpl implements AppointmentStorage {
 	@Override
 	public Appointment getAppointment(long id) throws NoSuchElementException {
 		Optional<AppointmentEntity> optional = repository.findById(id);
+		// this can throw NoSuchElementException
 		AppointmentEntity entity = optional.get();
 		return mapAppointment(entity);
 	}

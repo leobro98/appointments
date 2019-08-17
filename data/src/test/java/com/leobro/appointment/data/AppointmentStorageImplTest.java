@@ -5,8 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -41,6 +44,7 @@ public class AppointmentStorageImplTest {
 	private static Appointment createAppointment() {
 		Appointment app = new Appointment();
 
+		app.setId(ID);
 		app.setClientName(CLIENT_NAME);
 		app.setTime(DATE_TIME);
 		app.setPrice(PRICE);
@@ -52,6 +56,7 @@ public class AppointmentStorageImplTest {
 	private static AppointmentEntity createAppointmentEntity() {
 		AppointmentEntity entity = new AppointmentEntity();
 
+		entity.setId(ID);
 		entity.setClientName(CLIENT_NAME);
 		entity.setTime(DATE_TIME);
 		entity.setPrice(PRICE);
@@ -61,7 +66,9 @@ public class AppointmentStorageImplTest {
 	}
 
 	@Test
-	public void when_createAppointment_then_callsRepositorySave() {
+	public void when_createAppointment_then_callsRepositorySave_andReturnsId() {
+		appointment.setId(null);
+		entity.setId(null);
 		AppointmentEntity entityWithId = new AppointmentEntity();
 		entityWithId.setId(ID);
 		Mockito.when(repository.save(any(AppointmentEntity.class))).thenReturn(entityWithId);
@@ -73,14 +80,27 @@ public class AppointmentStorageImplTest {
 	}
 
 	@Test
-	public void when_getAppointment_then_callsRepositoryFindById() {
-		appointment.setId(ID);
-		entity.setId(ID);
+	public void when_getAppointment_then_callsRepositoryFindById_andReturnsAppointment() {
 		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(entity));
 
 		Appointment app = storage.getAppointment(ID);
 
 		Mockito.verify(repository).findById(ID);
 		assertThat(app, is(appointment));
+	}
+
+	@Test
+	public void when_getAllAppointments_then_callsRepositoryFindByTimeBetween_andReturnsAppointments() {
+		ArrayList<AppointmentEntity> entities = new ArrayList<>();
+		entities.add(entity);
+		Mockito.when(repository.findByTimeBetween(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class)))
+				.thenReturn(entities);
+		LocalDate startDate = LocalDate.now();
+		LocalDate endDate = startDate.plusDays(1);
+
+		List<Appointment> appointments = storage.getAllAppointments(startDate, endDate);
+
+		Mockito.verify(repository).findByTimeBetween(startDate, endDate);
+		assertThat(appointments.get(0), is(appointment));
 	}
 }

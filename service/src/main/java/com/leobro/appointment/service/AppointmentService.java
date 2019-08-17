@@ -102,8 +102,8 @@ public class AppointmentService {
 	/**
 	 * Retrieves all appointments that are scheduled between the passed date range sorted by their price.
 	 *
-	 * @param startDate The start date of the date interval.
-	 * @param endDate   The end date of the date interval.
+	 * @param startDate start date of the date interval; must be earlier then endDate,
+	 * @param endDate   end date of the date interval; must be later then startDate.
 	 * @return The response with all appointments within the date interval sorted by the price.
 	 */
 	public ServiceResponse getAllAppointments(LocalDate startDate, LocalDate endDate) {
