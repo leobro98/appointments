@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -89,6 +90,13 @@ public class AppointmentStorageImplTest {
 		assertThat(app, is(appointment));
 	}
 
+	@Test(expected = NoSuchElementException.class)
+	public void when_getAppointmentAndNotFound_then_throws() {
+		Mockito.when(repository.findById(Mockito.anyLong())).thenThrow(NoSuchElementException.class);
+
+		storage.getAppointment(ID);
+	}
+
 	@Test
 	public void when_getAllAppointments_then_callsRepositoryFindByTimeBetween_andReturnsAppointments() {
 		ArrayList<AppointmentEntity> entities = new ArrayList<>();
@@ -102,5 +110,21 @@ public class AppointmentStorageImplTest {
 
 		Mockito.verify(repository).findByTimeBetween(startDate, endDate);
 		assertThat(appointments.get(0), is(appointment));
+	}
+
+	@Test
+	public void when_updateAppointmentStatus_then_callsRepositorySave() {
+		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(entity));
+
+		storage.updateAppointmentStatus(ID, APP_STATUS);
+
+		Mockito.verify(repository).save(Mockito.any(AppointmentEntity.class));
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void when_updateAppointmentStatusAndNotFound_then_throws() {
+		Mockito.when(repository.findById(Mockito.anyLong())).thenThrow(NoSuchElementException.class);
+
+		storage.updateAppointmentStatus(ID, APP_STATUS);
 	}
 }

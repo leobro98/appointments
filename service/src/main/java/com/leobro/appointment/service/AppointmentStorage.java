@@ -33,4 +33,12 @@ public interface AppointmentStorage {
 	 * @return All appointments within the date interval sorted by the price.
 	 */
 	List<Appointment> getAllAppointments(LocalDate startDate, LocalDate endDate);
+
+	/**
+	 * Updates the status of the existing appointment.
+	 *
+	 * @param id     ID of the appointment,
+	 * @param status new status for the appointment.
+	 */
+	void updateAppointmentStatus(long id, Appointment.AppStatus status);
 }

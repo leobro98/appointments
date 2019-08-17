@@ -69,4 +69,13 @@ public class AppointmentStorageImpl implements AppointmentStorage {
 				.map(this::mapAppointment)
 				.collect(Collectors.toList());
 	}
+
+	@Override
+	public void updateAppointmentStatus(long id, Appointment.AppStatus status) {
+		Optional<AppointmentEntity> optional = repository.findById(id);
+		// this can throw NoSuchElementException
+		AppointmentEntity entity = optional.get();
+		entity.setStatus(status);
+		repository.save(entity);
+	}
 }

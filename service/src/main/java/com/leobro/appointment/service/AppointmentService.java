@@ -20,7 +20,7 @@ public class AppointmentService {
 
 	private static final String QUANTITY_ERROR = "Quantity must be a positive integer.";
 	private static final String END_DATE_ERROR = "End date must be in future.";
-	private static final String DATES_ERROR = "Start date must be before the end date";
+	private static final String DATES_ERROR = "Start date must be before the end date.";
 
 	private AppointmentStorage storage;
 
@@ -128,5 +128,16 @@ public class AppointmentService {
 			errors.add(DATES_ERROR);
 		}
 		return errors;
+	}
+
+	public ServiceResponse updateAppointmentStatus(long id, Appointment.AppStatus status) {
+		try {
+			storage.updateAppointmentStatus(id, status);
+			return createOkResponse(null);
+		} catch (NoSuchElementException e) {
+			return ResponseFactory.createNotFoundResponse();
+		} catch (Exception e) {
+			return createFatalResponse();
+		}
 	}
 }

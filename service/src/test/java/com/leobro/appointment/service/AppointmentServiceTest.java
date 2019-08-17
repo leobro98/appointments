@@ -114,7 +114,7 @@ public class AppointmentServiceTest {
 	}
 
 	@Test
-	public void when_getAppointmentAndNotFound_then_resultIsNotFound() {
+	public void when_getAppointmentAndNotFound_then_responseIsNotFound() {
 		Mockito.when(storage.getAppointment(Mockito.anyLong())).thenThrow(NoSuchElementException.class);
 
 		ServiceResponse response = service.getAppointment(ID);
@@ -147,5 +147,23 @@ public class AppointmentServiceTest {
 
 		Mockito.verify(storage, Mockito.never()).getAllAppointments(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class));
 		assertThat(response.getResult(), is(ServiceResponse.ResultType.ERROR));
+	}
+
+	@Test
+	public void when_updateAppointmentStatus_then_callsStorageUpdateAppointmentStatus() {
+		ServiceResponse response = service.updateAppointmentStatus(ID, APP_STATUS);
+
+		Mockito.verify(storage).updateAppointmentStatus(ID, APP_STATUS);
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.OK));
+	}
+
+	@Test
+	public void when_updateAppointmentStatusAndNotFound_then_responseIsNotFound() {
+		Mockito.doThrow(NoSuchElementException.class)
+				.when(storage).updateAppointmentStatus(Mockito.anyLong(), Mockito.any(Appointment.AppStatus.class));
+
+		ServiceResponse response = service.updateAppointmentStatus(ID, APP_STATUS);
+
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.NOT_FOUND));
 	}
 }

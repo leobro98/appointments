@@ -93,8 +93,9 @@ public class AppointmentController {
 	 */
 	@PutMapping("appointments/{id}")
 	public ResponseEntity<?> updateAppointmentStatus(@PathVariable("id") long id,
-													 @RequestBody String status) {
-		return ResponseEntity.ok().build();
+													 @RequestBody Appointment.AppStatus status) {
+		return ResponseFactory.createResponse(
+				service.updateAppointmentStatus(id, status));
 	}
 
 	/**
