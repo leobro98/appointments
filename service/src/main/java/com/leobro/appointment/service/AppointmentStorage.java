@@ -41,4 +41,12 @@ public interface AppointmentStorage {
 	 * @param status new status for the appointment.
 	 */
 	void updateAppointmentStatus(long id, Appointment.AppStatus status);
+
+	/**
+	 * Deletes the appointment with the passed ID.
+	 *
+	 * @param id ID of the appointment to be deleted.
+	 * @return Deleted appointment.
+	 */
+	Appointment deleteAppointment(long id);
 }

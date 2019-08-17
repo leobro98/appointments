@@ -127,4 +127,21 @@ public class AppointmentStorageImplTest {
 
 		storage.updateAppointmentStatus(ID, APP_STATUS);
 	}
+
+	@Test
+	public void when_deleteAppointment_then_callsRepositoryDeleteById_andReturnsAppointment() {
+		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(entity));
+
+		Appointment app = storage.deleteAppointment(ID);
+
+		Mockito.verify(repository).deleteById(ID);
+		assertThat(app, is(appointment));
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void when_deleteAppointmentAndNotFound_then_throws() {
+		Mockito.when(repository.findById(Mockito.anyLong())).thenThrow(NoSuchElementException.class);
+
+		storage.deleteAppointment(ID);
+	}
 }

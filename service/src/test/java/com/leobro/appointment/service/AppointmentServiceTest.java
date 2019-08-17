@@ -166,4 +166,24 @@ public class AppointmentServiceTest {
 
 		assertThat(response.getResult(), is(ServiceResponse.ResultType.NOT_FOUND));
 	}
+
+	@Test
+	public void when_deleteAppointment_then_callsStorageDeleteAppointment() {
+		Mockito.when(storage.deleteAppointment(Mockito.anyLong())).thenReturn(appointment);
+
+		ServiceResponse response = service.deleteAppointment(ID);
+
+		Mockito.verify(storage).deleteAppointment(ID);
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.OK));
+		assertThat(response.getPayload(), is(appointment));
+	}
+
+	@Test
+	public void when_deleteAppointmentAndNotFound_then_responseIsNotFound() {
+		Mockito.when(storage.deleteAppointment(Mockito.anyLong())).thenThrow(NoSuchElementException.class);
+
+		ServiceResponse response = service.deleteAppointment(ID);
+
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.NOT_FOUND));
+	}
 }

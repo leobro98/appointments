@@ -9,8 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.leobro.appointment.service.ResponseFactory.createFatalResponse;
-import static com.leobro.appointment.service.ResponseFactory.createOkResponse;
+import static com.leobro.appointment.service.ResponseFactory.*;
 
 /**
  * Holds the business logic of the application. Serves requests from the REST controller.
@@ -54,7 +53,7 @@ public class AppointmentService {
 	public ServiceResponse createRandomAppointments(int quantity, LocalDate endDate) {
 		List<String> errors = verifyRandom(quantity, endDate);
 		if (errors.size() > 0) {
-			return ResponseFactory.createErrorResponse(errors);
+			return createErrorResponse(errors);
 		}
 
 		List<Appointment> appointments = RandomHelper.getRandomAppointments(quantity, endDate);
@@ -93,7 +92,7 @@ public class AppointmentService {
 			Appointment appointment = storage.getAppointment(id);
 			return createOkResponse(appointment);
 		} catch (NoSuchElementException e) {
-			return ResponseFactory.createNotFoundResponse();
+			return createNotFoundResponse();
 		} catch (Exception e) {
 			return createFatalResponse();
 		}
@@ -109,7 +108,7 @@ public class AppointmentService {
 	public ServiceResponse getAllAppointments(LocalDate startDate, LocalDate endDate) {
 		List<String> errors = verifyDates(startDate, endDate);
 		if (errors.size() > 0) {
-			return ResponseFactory.createErrorResponse(errors);
+			return createErrorResponse(errors);
 		}
 
 		try {
@@ -130,12 +129,36 @@ public class AppointmentService {
 		return errors;
 	}
 
+	/**
+	 * Updates the status of the existing appointment.
+	 *
+	 * @param id     ID of the appointment,
+	 * @param status new status for the appointment.
+	 * @return Response with the empty payload.
+	 */
 	public ServiceResponse updateAppointmentStatus(long id, Appointment.AppStatus status) {
 		try {
 			storage.updateAppointmentStatus(id, status);
 			return createOkResponse(null);
 		} catch (NoSuchElementException e) {
-			return ResponseFactory.createNotFoundResponse();
+			return createNotFoundResponse();
+		} catch (Exception e) {
+			return createFatalResponse();
+		}
+	}
+
+	/**
+	 * Deletes the appointment with the passed ID.
+	 *
+	 * @param id ID of the appointment to be deleted.
+	 * @return Response with the deleted appointment.
+	 */
+	public ServiceResponse deleteAppointment(long id) {
+		try {
+			Appointment appointment = storage.deleteAppointment(id);
+			return createOkResponse(appointment);
+		} catch (NoSuchElementException e) {
+			return createNotFoundResponse();
 		} catch (Exception e) {
 			return createFatalResponse();
 		}

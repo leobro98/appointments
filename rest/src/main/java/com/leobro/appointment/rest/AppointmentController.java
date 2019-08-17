@@ -106,6 +106,7 @@ public class AppointmentController {
 	 */
 	@DeleteMapping("appointments/{id}")
 	public ResponseEntity<?> deleteAppointment(@PathVariable("id") long id) {
-		return ResponseEntity.ok().build();
+		return ResponseFactory.createResponse(
+				service.deleteAppointment(id));
 	}
 }
