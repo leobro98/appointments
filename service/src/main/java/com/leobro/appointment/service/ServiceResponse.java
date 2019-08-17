@@ -11,15 +11,17 @@ public class ServiceResponse {
 	/**
 	 * Shows, how successful was the processing of the request.
 	 * <p>OK - the processing was successful,
+	 * <p>CREATED - new resource was created,
 	 * <p>ERROR - there was a validation error caused by data in the request,
 	 * <p>NOT_FOUND - the sought resource is not found,
 	 * <p>FATAL - unexpected exception occurred during the processing.
 	 */
 	public enum ResultType {
 		OK,
+		CREATED,
 		ERROR,
 		NOT_FOUND,
-		FATAL;
+		FATAL
 	}
 
 	ServiceResponse(ResultType result, Object payload) {

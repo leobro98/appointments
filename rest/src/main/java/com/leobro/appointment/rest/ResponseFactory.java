@@ -3,6 +3,9 @@ package com.leobro.appointment.rest;
 import com.leobro.appointment.service.ServiceResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 /**
  * Creates different kinds of Web service responses including the HTTP status and the payload.
@@ -22,6 +25,10 @@ class ResponseFactory {
 		if (isOk(serviceResponse)) {
 			return ResponseEntity.ok()
 					.body(payload);
+		} else if (isCreated(serviceResponse)) {
+			return ResponseEntity.created(
+					getLocationUri((Long) serviceResponse.getPayload()))
+					.body(payload);
 		} else if (isValidationError(serviceResponse)) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(payload);
@@ -37,11 +44,22 @@ class ResponseFactory {
 		return serviceResponse.getResult() == ServiceResponse.ResultType.OK;
 	}
 
+	private static boolean isCreated(ServiceResponse serviceResponse) {
+		return serviceResponse.getResult() == ServiceResponse.ResultType.CREATED;
+	}
+
 	private static boolean isValidationError(ServiceResponse serviceResponse) {
 		return serviceResponse.getResult() == ServiceResponse.ResultType.ERROR;
 	}
 
 	private static boolean isNotFoundError(ServiceResponse serviceResponse) {
 		return serviceResponse.getResult() == ServiceResponse.ResultType.NOT_FOUND;
+	}
+
+	private static URI getLocationUri(Long id) {
+		return ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(id)
+				.toUri();
 	}
 }

@@ -21,6 +21,16 @@ class ResponseFactory {
 	}
 
 	/**
+	 * Creates the response on successful creating a resource.
+	 *
+	 * @param payload the content of the response.
+	 * @return The service response from the successful creation operation.
+	 */
+	static ServiceResponse createCreatedResponse(Object payload) {
+		return new ServiceResponse(ServiceResponse.ResultType.CREATED, payload);
+	}
+
+	/**
 	 * Creates the response from handled errors, usually caused by wrong input data.
 	 *
 	 * @param errors the explanation of the errors.

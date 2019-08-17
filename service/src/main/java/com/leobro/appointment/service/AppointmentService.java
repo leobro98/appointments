@@ -37,7 +37,7 @@ public class AppointmentService {
 	public ServiceResponse createAppointment(Appointment appointment) {
 		try {
 			long id = storage.createAppointment(appointment);
-			return createOkResponse(id);
+			return createCreatedResponse(id);
 		} catch (Exception e) {
 			return createFatalResponse();
 		}

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 /**
  * Controller of the REST Web service. This is the first class hit by the client's request.
- * It returns results as JSON or XML string depending on the HTTP Accept header of the request.
+ * It returns results as JSON or XML string depending on the Accept HTTP header of the request.
  */
 @RestController
 @RequestMapping(path = "/")
