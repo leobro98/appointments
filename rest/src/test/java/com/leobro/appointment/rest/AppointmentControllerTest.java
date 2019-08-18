@@ -54,7 +54,8 @@ public class AppointmentControllerTest {
 	private static final int NUMBER_APPOINTMENTS_CREATED = 5;
 
 	private static final String APP_CLIENT_NAME = "Julia Roberts";
-	private static final LocalDateTime APP_TIME = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+	private static final LocalDateTime APP_TIME = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS)
+			.withHour(12).withMinute(11).withSecond(22);
 	private static final double APP_PRICE = 30.0;
 	private static final Appointment.AppStatus APP_STATUS = Appointment.AppStatus.WAIT;
 	private static final String APP_STATUS_JSON = "\"" + APP_STATUS.name() + "\"";

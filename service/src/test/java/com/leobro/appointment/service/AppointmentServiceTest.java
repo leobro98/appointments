@@ -57,7 +57,7 @@ public class AppointmentServiceTest {
 		ServiceResponse response = service.createAppointment(appointment);
 
 		Mockito.verify(storage).createAppointment(appointment);
-		assertThat(response.getResult(), is(ServiceResponse.ResultType.OK));
+		assertThat(response.getResult(), is(ServiceResponse.ResultType.CREATED));
 		assertThat(response.getPayload(), is(CREATED_ID));
 	}
 

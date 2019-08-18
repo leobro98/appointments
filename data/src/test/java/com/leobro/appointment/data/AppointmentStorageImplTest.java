@@ -108,7 +108,7 @@ public class AppointmentStorageImplTest {
 
 		List<Appointment> appointments = storage.getAllAppointments(startDate, endDate);
 
-		Mockito.verify(repository).findByTimeBetween(startDate, endDate);
+		Mockito.verify(repository).findByTimeBetween(startDate, endDate.plusDays(1));
 		assertThat(appointments.get(0), is(appointment));
 	}
 
