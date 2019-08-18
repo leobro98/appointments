@@ -56,7 +56,7 @@ The working application is available on the address `http://localhost:8080/`. Yo
 http://localhost:8080/schedule?quantity=30&enddate=2019-08-23
 ```
 
-to create random appointments or read read them using
+to create random appointments or read them using
 
 ```
 http://localhost:8080/appointments?startdate=2019-08-20&enddate=2019-08-22
