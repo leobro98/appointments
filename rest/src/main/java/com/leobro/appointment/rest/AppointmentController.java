@@ -16,7 +16,6 @@ import java.time.LocalDate;
  * It returns results as JSON or XML string depending on the Accept HTTP header of the request.
  */
 @RestController
-@RequestMapping(path = "/")
 @Validated
 public class AppointmentController {
 
@@ -32,7 +31,7 @@ public class AppointmentController {
 	 *
 	 * @return The created appointment ID.
 	 */
-	@PostMapping("appointments")
+	@PostMapping("/appointments")
 	public ResponseEntity<?> createAppointment(@Valid @RequestBody Appointment app) {
 		return ResponseFactory.createResponse(
 				service.createAppointment(app));
@@ -47,7 +46,7 @@ public class AppointmentController {
 	 * @param endDate  The end date of the date interval starting from the current date.
 	 * @return The number of actually created appointments.
 	 */
-	@PostMapping("schedule")
+	@PostMapping("/schedule")
 	public ResponseEntity<?> createRandomAppointments(@RequestParam("quantity") int quantity,
 													  @RequestParam("enddate")
 													  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
@@ -61,7 +60,7 @@ public class AppointmentController {
 	 * @param id ID of the appointment.
 	 * @return The appointment with the requested ID.
 	 */
-	@GetMapping("appointments/{id}")
+	@GetMapping("/appointments/{id}")
 	public ResponseEntity<?> getAppointment(@PathVariable("id") long id) {
 		return ResponseFactory.createResponse(
 				service.getAppointment(id));
@@ -75,7 +74,7 @@ public class AppointmentController {
 	 * @param endDate   The end date of the date interval.
 	 * @return All appointments within the date interval sorted by the price.
 	 */
-	@GetMapping("appointments")
+	@GetMapping("/appointments")
 	public ResponseEntity<?> getAllAppointments(@RequestParam("startdate")
 												@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
 												@RequestParam("enddate")
@@ -91,7 +90,7 @@ public class AppointmentController {
 	 * @param status new status for the appointment.
 	 * @return An empty body.
 	 */
-	@PutMapping("appointments/{id}")
+	@PutMapping("/appointments/{id}")
 	public ResponseEntity<?> updateAppointmentStatus(@PathVariable("id") long id,
 													 @RequestBody Appointment.AppStatus status) {
 		return ResponseFactory.createResponse(
@@ -104,7 +103,7 @@ public class AppointmentController {
 	 * @param id ID of the appointment to be deleted.
 	 * @return The deleted appointment.
 	 */
-	@DeleteMapping("appointments/{id}")
+	@DeleteMapping("/appointments/{id}")
 	public ResponseEntity<?> deleteAppointment(@PathVariable("id") long id) {
 		return ResponseFactory.createResponse(
 				service.deleteAppointment(id));

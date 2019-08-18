@@ -24,7 +24,7 @@ public class ServiceResponse {
 		FATAL
 	}
 
-	ServiceResponse(ResultType result, Object payload) {
+	public ServiceResponse(ResultType result, Object payload) {
 		this.result = result;
 		this.payload = payload;
 	}

@@ -50,7 +50,7 @@ class ResponseFactory {
 	}
 
 	/**
-	 * Creates the response about some unexpected error in the service.
+	 * Creates the response about some unexpected error in the service for which client can have no effect.
 	 *
 	 * @return The service response telling about an error on the server side.
 	 */

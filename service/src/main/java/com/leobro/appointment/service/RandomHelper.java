@@ -8,6 +8,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+/**
+ * Helper class for creation random appointments for testing purposes.
+ * <p>Appointments are created for the specified date range only within work hours. For the sake of simplicity,
+ * they are created only to a round hour, but randomly. Thus, each round work hour represents a slot for an appointment.
+ * If two appointments would take the same time slot, one of them is neglected.
+ */
 class RandomHelper {
 
 	private static final int START_WORK_HOUR = 9;

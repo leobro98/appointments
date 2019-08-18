@@ -64,7 +64,9 @@ public class AppointmentStorageImpl implements AppointmentStorage {
 
 	@Override
 	public List<Appointment> getAllAppointments(LocalDate startDate, LocalDate endDate) {
-		List<AppointmentEntity> entities = repository.findByTimeBetween(startDate, endDate);
+		// endDate contains only date portion, but the time field in the database is of TIMESTAMP type,
+		// so the comparison is made up to the beginning of the second date parameter
+		List<AppointmentEntity> entities = repository.findByTimeBetween(startDate, endDate.plusDays(1));
 		return entities.stream()
 				.map(this::mapAppointment)
 				.collect(Collectors.toList());

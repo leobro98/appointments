@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import static com.leobro.appointment.service.ResponseFactory.*;
 
 /**
- * Holds the business logic of the application. Serves requests from the REST controller.
+ * Holds the business logic of the application. Handles requests from the REST controller.
  */
 @Service
 public class AppointmentService {

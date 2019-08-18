@@ -4,9 +4,11 @@ import com.leobro.appointment.service.Appointment;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Objects;
 
+/**
+ * Data entity for mapping the object to the database table.
+ */
 @Entity
 @Table(name = "appointment")
 class AppointmentEntity {
