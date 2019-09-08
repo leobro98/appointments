@@ -68,44 +68,142 @@ Below you can see examples of the URLs, request and response bodies and possible
 
 <table>
 <thead>
-<th> Method </th><th> URL </th><th> Function </th><th> Response </th>
+    <tr>
+        <th> Method </th>
+        <th> URL </th>
+        <th> Function </th>
+        <th> Response </th>
+    </tr>
 </thead>
 <tbody>
-<tr>
-<td> POST </td><td> /appointments </td><td> Create </td><td> 201 (Created), 'Location' header </td>
-</tr>
-<tr>
-<td> </td><td> `{"clientName": "Silvester Stallone", "time": "2019-09-20T17:00", "price": 9.99, "status": "WAIT"}` </td><td> </td><td> 14 |
-</tr>
-<tr>
-<td> POST </td><td> /schedule?quantity=20&enddate=18.09.2019 </td><td> Create several random appointments </td><td> 201 (Created), 400 (Bad Request) |
-</tr>
-<tr>
-<td> </td><td> </td><td> </td><td> 18 |
-</tr>
-<tr>
-<td> GET </td><td> /appointments/12 </td><td> Retrieve a specific appointment </td><td> 200 (OK), 404 (Not Found) |
-</tr>
-<tr>
-<td> </td><td> </td><td> </td><td> `{"id":12, "clientName":"Kevin Ericson", "time":"2019-09-15T15:00:00", "price":110.0, "status":"PASS"}` |
-</tr>
-<tr>
-<td> GET </td><td> /appointments?startdate=12.09.2019&enddate=16.09.2019 </td><td> Retrieve all appointments in the date interval </td><td> 200 (OK), 400 (Bad Request) |
-</tr>
-<tr>
-<td> </td><td> </td><td> </td><td> `[{"id":26, "clientName":"Silvester Stallone", "time":"2019-09-20T17:00:00", "price":9.99, "status":"WAIT"}, {"id":1, "clientName":"Kevin Ericson", "time":"2019-09-09T12:00:00", "price":10.0, "status":"PASS"}]` |
-</tr>
-<tr>
-<td> PUT </td><td> /appointments/12 </td><td> Update status </td><td> 200 (OK), 404 (Not Found) |
-</tr>
-<tr>
-<td> </td><td> `"OBTAIN"` </td><td> </td><td> </td><td>
-</tr>
-<tr>
-<td> DELETE </td><td> /appointments/12 </td><td> Delete </td><td> 200 (OK), 404 (Not Found) |
-</tr>
-<tr>
-<td> </td><td> </td><td> </td><td> `{"id":12, "clientName":"Danny DeVito", "time":"2019-09-16T14:00:00", "price":180.0, "status":"PASS"}` |
-</tr>
+    <tr>
+        <td> POST </td>
+        <td><pre> /appointments </pre></td>
+        <td> Create </td>
+        <td> 201 (Created), 'Location' header </td>
+    </tr>
+    <tr>
+        <td> </td>
+        <td>
+            <pre>
+                <code>
+                    {
+                        "clientName": "Silvester Stallone",
+                        "time": "2019-09-20T17:00",
+                        "price": 9.99,
+                        "status": "WAIT"
+                    }
+                </code>
+            </pre>
+        </td>
+        <td></td>
+        <td> 14 </td>
+    </tr>
+    <tr>
+        <td> POST </td>
+        <td><pre> /schedule?quantity=20&enddate=18.09.2019 </pre></td>
+        <td> Create several random appointments </td>
+        <td> 201 (Created), 400 (Bad Request) </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td> 18 </td>
+    </tr>
+    <tr>
+        <td> GET </td>
+        <td><pre> /appointments/12 </pre></td>
+        <td> Retrieve a specific appointment </td>
+        <td> 200 (OK), 404 (Not Found) </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <pre>
+                <code>
+                    {
+                        "id": 12,
+                        "clientName": "Kevin Ericson",
+                        "time": "2019-09-15T15:00:00",
+                        "price": 110.0,
+                        "status": "PASS"
+                    }
+                </code>
+            </pre>
+        </td>
+    </tr>
+    <tr>
+        <td> GET </td>
+        <td><pre> /appointments?startdate=12.09.2019&enddate=16.09.2019 </pre></td>
+        <td> Retrieve all appointments in the date interval </td>
+        <td> 200 (OK), 400 (Bad Request) </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <pre>
+                <code>
+                    [
+                        {
+                            "id": 26,
+                            "clientName": "Silvester Stallone",
+                            "time": "2019-09-20T17:00:00",
+                            "price": 9.99,
+                            "status": "WAIT"
+                        },
+                        {
+                            "id": 1,
+                            "clientName": "Kevin Ericson",
+                            "time": "2019-09-09T12:00:00",
+                            "price": 10.0,
+                            "status": "PASS"
+                        }
+                    ]
+                </code>
+            </pre>
+        </td>
+    </tr>
+    <tr>
+        <td> PUT </td>
+        <td><pre> /appointments/12 </pre></td>
+        <td> Update status </td>
+        <td> 200 (OK), 404 (Not Found) </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><pre><code>"OBTAIN"</code></pre></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td> DELETE </td>
+        <td><pre> /appointments/12 </pre></td>
+        <td> Delete </td>
+        <td> 200 (OK), 404 (Not Found) </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <pre>
+                <code>
+                    {
+                        "id": 12,
+                        "clientName": "Danny DeVito",
+                        "time": "2019-09-16T14:00:00",
+                        "price": 180.0,
+                        "status": "PASS"
+                    }
+                </code>
+            </pre>
+        </td>
+    </tr>
 </tbody>
 </table>
