@@ -70,7 +70,7 @@ Below you can see examples of the URLs, request and response bodies and possible
 <thead>
     <tr>
         <th> Method </th>
-        <th> URL </th>
+        <th> Request </th>
         <th> Function </th>
         <th> Response </th>
     </tr>
