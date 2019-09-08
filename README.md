@@ -66,17 +66,46 @@ http://localhost:8080/appointments?startdate=2019-08-20&enddate=2019-08-22
 
 Below you can see examples of the URLs, request and response bodies and possible response statuses for all endpoints.
 
-| Method | URL | Function | Response |
-| ------ | --- | -------- | -------- |
-| POST | /appointments | Create | 201 (Created), 'Location' header |
-| | `{"clientName": "Silvester Stallone", "time": "2019-09-20T17:00", "price": 9.99, "status": "WAIT"}` | | 14 |
-| POST | /schedule?quantity=20&enddate=18.09.2019 | Create several random appointments | 201 (Created), 400 (Bad Request) |
-| | | | 18 |
-| GET | /appointments/12 | Retrieve a specific appointment | 200 (OK), 404 (Not Found) |
-| | | | `{"id":12, "clientName":"Kevin Ericson", "time":"2019-09-15T15:00:00", "price":110.0, "status":"PASS"}` |
-| GET | /appointments?startdate=12.09.2019&enddate=16.09.2019 | Retrieve all appointments in the date interval | 200 (OK), 400 (Bad Request) |
-| | | | `[{"id":26, "clientName":"Silvester Stallone", "time":"2019-09-20T17:00:00", "price":9.99, "status":"WAIT"}, {"id":1, "clientName":"Kevin Ericson", "time":"2019-09-09T12:00:00", "price":10.0, "status":"PASS"}]` |
-| PUT | /appointments/12 | Update status | 200 (OK), 404 (Not Found) |
-| | `"OBTAIN"` | | |
-| DELETE | /appointments/12 | Delete | 200 (OK), 404 (Not Found) |
-| | | | `{"id":12, "clientName":"Danny DeVito", "time":"2019-09-16T14:00:00", "price":180.0, "status":"PASS"}` |
+<table>
+<thead>
+<th> Method </th><th> URL </th><th> Function </th><th> Response </th>
+</thead>
+<tbody>
+<tr>
+<td> POST </td><td> /appointments </td><td> Create </td><td> 201 (Created), 'Location' header </td>
+</tr>
+<tr>
+<td> </td><td> `{"clientName": "Silvester Stallone", "time": "2019-09-20T17:00", "price": 9.99, "status": "WAIT"}` </td><td> </td><td> 14 |
+</tr>
+<tr>
+<td> POST </td><td> /schedule?quantity=20&enddate=18.09.2019 </td><td> Create several random appointments </td><td> 201 (Created), 400 (Bad Request) |
+</tr>
+<tr>
+<td> </td><td> </td><td> </td><td> 18 |
+</tr>
+<tr>
+<td> GET </td><td> /appointments/12 </td><td> Retrieve a specific appointment </td><td> 200 (OK), 404 (Not Found) |
+</tr>
+<tr>
+<td> </td><td> </td><td> </td><td> `{"id":12, "clientName":"Kevin Ericson", "time":"2019-09-15T15:00:00", "price":110.0, "status":"PASS"}` |
+</tr>
+<tr>
+<td> GET </td><td> /appointments?startdate=12.09.2019&enddate=16.09.2019 </td><td> Retrieve all appointments in the date interval </td><td> 200 (OK), 400 (Bad Request) |
+</tr>
+<tr>
+<td> </td><td> </td><td> </td><td> `[{"id":26, "clientName":"Silvester Stallone", "time":"2019-09-20T17:00:00", "price":9.99, "status":"WAIT"}, {"id":1, "clientName":"Kevin Ericson", "time":"2019-09-09T12:00:00", "price":10.0, "status":"PASS"}]` |
+</tr>
+<tr>
+<td> PUT </td><td> /appointments/12 </td><td> Update status </td><td> 200 (OK), 404 (Not Found) |
+</tr>
+<tr>
+<td> </td><td> `"OBTAIN"` </td><td> </td><td> </td><td>
+</tr>
+<tr>
+<td> DELETE </td><td> /appointments/12 </td><td> Delete </td><td> 200 (OK), 404 (Not Found) |
+</tr>
+<tr>
+<td> </td><td> </td><td> </td><td> `{"id":12, "clientName":"Danny DeVito", "time":"2019-09-16T14:00:00", "price":180.0, "status":"PASS"}` |
+</tr>
+</tbody>
+</table>
