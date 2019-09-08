@@ -64,15 +64,19 @@ http://localhost:8080/appointments?startdate=2019-08-20&enddate=2019-08-22
 
 ## Endpoints
 
+Below you can see examples of the URLs, request and response bodies for all endpoints.
+
 | Method | URL | Function | Response |
 | ------ | --- | -------- | -------- |
 | POST | /appointments | Create | 201 (Created), 'Location' header |
-| | `{
-      "id": 14,
-      "clientName": "Silvester Stallone",
-      "time": "2019-08-20T17:00",
-      "price": 9.99,
-      "status": "WAIT"
-    }` | | |
-| POST | /schedule?quantity=20&enddate=18.08.2019 | Create several random appointments | 201 (Created), 400 (Bad Request) |
-| | | | |
+| | `{"id": 14, "clientName": "Silvester Stallone", "time": "2019-09-20T17:00", "price": 9.99, "status": "WAIT"}` | | 14 |
+| POST | /schedule?quantity=20&enddate=18.09.2019 | Create several random appointments | 201 (Created), 400 (Bad Request) |
+| | | | 18 |
+| GET | /appointments/12 | Retrieve a specific appointment | 200 (OK), 404 (Not Found) |
+| | | | `{"id":12, "clientName":"Kevin Ericson", "time":"2019-09-15T15:00:00", "price":110.0, "status":"PASS"}` |
+| GET | /appointments?startdate=12.09.2019&enddate=16.09.2019 |  | 200 (OK), 400 (Bad Request) |
+| | | | `[{"id":26, "clientName":"Silvester Stallone", "time":"2019-09-20T17:00:00", "price":9.99, "status":"WAIT"}, {"id":1, "clientName":"Kevin Ericson", "time":"2019-09-09T12:00:00", "price":10.0, "status":"PASS"}]` |
+| PUT | /appointments/12 | Update status | 200 (OK), 404 (Not Found) |
+| | `"OBTAIN"` | | |
+| DELETE | /appointments/12 | Delete | 200 (OK), 404 (Not Found) |
+| | | | `{"id":12, "clientName":"Danny DeVito", "time":"2019-09-16T14:00:00", "price":180.0, "status":"PASS"}` |
