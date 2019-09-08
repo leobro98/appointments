@@ -85,16 +85,12 @@ Below you can see examples of the URLs, request and response bodies and possible
     <tr>
         <td> </td>
         <td>
-            <pre>
-                <code>
-                    {
-                        "clientName": "Silvester Stallone",
-                        "time": "2019-09-20T17:00",
-                        "price": 9.99,
-                        "status": "WAIT"
-                    }
-                </code>
-            </pre>
+            <pre><code>{
+    "clientName": "Silvester Stallone",
+    "time": "2019-09-20T17:00",
+    "price": 9.99,
+    "status": "WAIT"
+}</code></pre>
         </td>
         <td></td>
         <td> 14 </td>
@@ -122,17 +118,13 @@ Below you can see examples of the URLs, request and response bodies and possible
         <td></td>
         <td></td>
         <td>
-            <pre>
-                <code>
-                    {
-                        "id": 12,
-                        "clientName": "Kevin Ericson",
-                        "time": "2019-09-15T15:00:00",
-                        "price": 110.0,
-                        "status": "PASS"
-                    }
-                </code>
-            </pre>
+            <pre><code>{
+    "id": 12,
+    "clientName": "Kevin Ericson",
+    "time": "2019-09-15T15:00:00",
+    "price": 110.0,
+    "status": "PASS"
+}</code></pre>
         </td>
     </tr>
     <tr>
@@ -146,26 +138,22 @@ Below you can see examples of the URLs, request and response bodies and possible
         <td></td>
         <td></td>
         <td>
-            <pre>
-                <code>
-                    [
-                        {
-                            "id": 26,
-                            "clientName": "Silvester Stallone",
-                            "time": "2019-09-20T17:00:00",
-                            "price": 9.99,
-                            "status": "WAIT"
-                        },
-                        {
-                            "id": 1,
-                            "clientName": "Kevin Ericson",
-                            "time": "2019-09-09T12:00:00",
-                            "price": 10.0,
-                            "status": "PASS"
-                        }
-                    ]
-                </code>
-            </pre>
+            <pre><code>[
+    {
+        "id": 26,
+        "clientName": "Silvester Stallone",
+        "time": "2019-09-20T17:00:00",
+        "price": 9.99,
+        "status": "WAIT"
+    },
+    {
+        "id": 1,
+        "clientName": "Kevin Ericson",
+        "time": "2019-09-09T12:00:00",
+        "price": 10.0,
+        "status": "PASS"
+    }
+]</code></pre>
         </td>
     </tr>
     <tr>
@@ -192,17 +180,13 @@ Below you can see examples of the URLs, request and response bodies and possible
         <td></td>
         <td></td>
         <td>
-            <pre>
-                <code>
-                    {
-                        "id": 12,
-                        "clientName": "Danny DeVito",
-                        "time": "2019-09-16T14:00:00",
-                        "price": 180.0,
-                        "status": "PASS"
-                    }
-                </code>
-            </pre>
+            <pre><code>{
+    "id": 12,
+    "clientName": "Danny DeVito",
+    "time": "2019-09-16T14:00:00",
+    "price": 180.0,
+    "status": "PASS"
+}</code></pre>
         </td>
     </tr>
 </tbody>
