@@ -61,3 +61,18 @@ to create random appointments or read them using
 ```
 http://localhost:8080/appointments?startdate=2019-08-20&enddate=2019-08-22
 ```
+
+## Endpoints
+
+| Method | URL | Function | Response |
+| ------ | --- | -------- | -------- |
+| POST | /appointments | Create | 201 (Created), 'Location' header |
+| | ```{
+      "id": 14,
+      "clientName": "Silvester Stallone",
+      "time": "2019-08-20T17:00",
+      "price": 9.99,
+      "status": "WAIT"
+    }``` | | |
+| POST | /schedule?quantity=20&enddate=18.08.2019 | Create several random appointments | 201 (Created), 400 (Bad Request) |
+| | | | |
