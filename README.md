@@ -78,7 +78,7 @@ Below you can see examples of the URLs, request and response bodies and possible
 <tbody>
     <tr>
         <td> POST </td>
-        <td><pre> /appointments </pre></td>
+        <td> /appointments </td>
         <td> Create </td>
         <td> 201 (Created), 'Location' header </td>
     </tr>
@@ -97,7 +97,7 @@ Below you can see examples of the URLs, request and response bodies and possible
     </tr>
     <tr>
         <td> POST </td>
-        <td><pre> /schedule?quantity=20&enddate=18.09.2019 </pre></td>
+        <td> /schedule?quantity=20&enddate=18.09.2019 </td>
         <td> Create several random appointments </td>
         <td> 201 (Created), 400 (Bad Request) </td>
     </tr>
@@ -109,7 +109,7 @@ Below you can see examples of the URLs, request and response bodies and possible
     </tr>
     <tr>
         <td> GET </td>
-        <td><pre> /appointments/12 </pre></td>
+        <td> /appointments/12 </td>
         <td> Retrieve a specific appointment </td>
         <td> 200 (OK), 404 (Not Found) </td>
     </tr>
@@ -129,7 +129,7 @@ Below you can see examples of the URLs, request and response bodies and possible
     </tr>
     <tr>
         <td> GET </td>
-        <td><pre> /appointments?startdate=12.09.2019&enddate=16.09.2019 </pre></td>
+        <td> /appointments?startdate=12.09.2019&enddate=16.09.2019 </td>
         <td> Retrieve all appointments in the date interval </td>
         <td> 200 (OK), 400 (Bad Request) </td>
     </tr>
@@ -158,7 +158,7 @@ Below you can see examples of the URLs, request and response bodies and possible
     </tr>
     <tr>
         <td> PUT </td>
-        <td><pre> /appointments/12 </pre></td>
+        <td> /appointments/12 </td>
         <td> Update status </td>
         <td> 200 (OK), 404 (Not Found) </td>
     </tr>
@@ -171,7 +171,7 @@ Below you can see examples of the URLs, request and response bodies and possible
     </tr>
     <tr>
         <td> DELETE </td>
-        <td><pre> /appointments/12 </pre></td>
+        <td> /appointments/12 </td>
         <td> Delete </td>
         <td> 200 (OK), 404 (Not Found) </td>
     </tr>
