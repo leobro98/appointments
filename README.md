@@ -167,7 +167,6 @@ Below you can see examples of the URLs, request and response bodies and possible
         <td><pre><code>"OBTAIN"</code></pre></td>
         <td></td>
         <td></td>
-        <td></td>
     </tr>
     <tr>
         <td> DELETE </td>
