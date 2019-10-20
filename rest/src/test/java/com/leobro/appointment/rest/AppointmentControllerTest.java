@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
@@ -45,9 +46,10 @@ public class AppointmentControllerTest {
 	private static final String APPOINTMENTS_LOCATION = "http://localhost" + APPOINTMENTS_URL + "/";
 
 	private static final long ID = 123;
+	private static String TOMORROW = LocalDate.now().plusDays(1).format(DateTimeFormatter.ISO_DATE);
 	private static final String APPOINTMENT_JSON = "{\n" +
 			"  \"clientName\": \"Silvester Stallone\",\n" +
-			"  \"time\": \"2019-08-20T17:00\",\n" +
+			"  \"time\": \"" + TOMORROW + "T17:00\",\n" +
 			"  \"price\": 9.99,\n" +
 			"  \"status\": \"WAIT\"\n" +
 			"}";
