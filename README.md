@@ -1,6 +1,6 @@
 # Appointment Management Service
 
-This is solution to the test assignment for appointments management REST service. The assignment itself can be found in `coding-exercise.md`.
+This is a solution to a test assignment for appointments management REST service. The assignment itself can be found in `coding-exercise.md`.
 
 ## Architecture
 
